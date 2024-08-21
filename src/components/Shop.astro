@@ -1,0 +1,56 @@
+---
+import { Image } from "astro:assets";
+import { getEntryBySlug, type CollectionEntry } from "astro:content";
+import ResaleType from "./ResaleType.astro";
+import Price from "./Price.astro";
+import { getEntry } from "astro:content";
+
+type Props = {
+    shop: CollectionEntry<"shops">;
+};
+
+const { shop } = Astro.props;
+const { price, floor, size } = shop.data ;
+
+const { data: shopData } = await getEntry( "zprice", price.id);
+
+const parsepsf = (shopData.priceNow);
+const parsesize = (shop.data.size);
+const totalpricebsp =  ( parsepsf * parsesize ) / 100000 ;
+
+---
+
+
+<div class="w-[300px] inline-block m-4 rounded-xl">
+    <a href={`/unit/${shop.slug}`}>
+        <div class="">
+            <div>
+                <ResaleType />
+            </div>
+            <div>
+                <Image
+                        src={shop.data.image}
+                        width={400}
+                        height={600 / 1.5}
+                        alt={shop.data.title}
+                        class="aspect-thumbnail object-cover"
+                        format="webp"
+
+                    />
+                    
+                
+            </div>
+            <div class="bg-slate-100 px-3 py-5">
+               <h2> BSP Price: Rs {totalpricebsp} Lacs</h2>
+                <h2>{shop.data.title}</h2>
+                <h2>Size: {size} sq ft</h2>
+                <h2>Floor: {floor}</h2>
+                <h2>Atrium Facing: {shop.data.atrium ? "yes" : "no"}</h2>
+                <h2>Basic Price: Rs {shopData.priceNow} psf</h2>
+                <h2>Category: {shop.data.category}</h2>
+                <h2>introduction: {shop.data.date}</h2>
+            </div>
+        </div>
+    </a>
+</div>
+

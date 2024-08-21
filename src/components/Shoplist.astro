@@ -1,0 +1,27 @@
+---
+import type { GetStaticPaths } from "astro";
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import Shop from "./Shop.astro";
+import { getEntry } from "astro:content";
+
+type Props = {
+    shops: CollectionEntry<"shops">[];
+};
+
+// export async function getStaticPaths({paginate}) {
+//     const allshops = await Astro.glob("../content/shops/*.md");
+//     const formattedshops = allshops;
+//     return paginate(formattedshops, {
+//         pageSize: 4,
+//     });
+// }
+
+
+const { shops } = Astro.props;
+
+---
+
+<div class="flex justify-center">
+    {shops.map((shop) => <Shop shop={shop} />)}
+</div>
